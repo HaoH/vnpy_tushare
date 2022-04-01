@@ -18,6 +18,7 @@ INTERVAL_VT2TS: Dict[Interval, str] = {
     Interval.MINUTE: "1min",
     Interval.HOUR: "60min",
     Interval.DAILY: "D",
+    Interval.WEEKLY: "W"
 }
 
 # 股票支持列表
@@ -51,7 +52,8 @@ EXCHANGE_VT2TS: Dict[Exchange, str] = {
 INTERVAL_ADJUSTMENT_MAP: Dict[Interval, timedelta] = {
     Interval.MINUTE: timedelta(minutes=1),
     Interval.HOUR: timedelta(hours=1),
-    Interval.DAILY: timedelta()
+    Interval.DAILY: timedelta(),
+    Interval.WEEKLY: timedelta()
 }
 
 # 中国上海时区
@@ -120,7 +122,7 @@ class TushareDatafeed(BaseDatafeed):
         """初始化"""
         if self.inited:
             return True
-        
+
         if not self.username:
             output("Tushare数据服务初始化失败：用户名为空！")
             return False
@@ -200,7 +202,7 @@ class TushareDatafeed(BaseDatafeed):
                 if row["open"] is None:
                     continue
 
-                if interval.value == "d":
+                if interval.value in ["d", "w"]:
                     dt: str = row["trade_date"]
                     dt: datetime = datetime.strptime(dt, "%Y%m%d")
                 else:

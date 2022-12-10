@@ -168,7 +168,8 @@ class TushareDatafeed(BaseDatafeed):
                 start_date=start,
                 end_date=end,
                 asset=asset,
-                freq=ts_interval
+                freq=ts_interval,
+                adj='qfq'
             )
         except IOError as ex:
             output(f"发生输入/输出错误：{ex}")
@@ -186,7 +187,8 @@ class TushareDatafeed(BaseDatafeed):
                 start_date=start,
                 end_date=tmp_end,
                 asset=asset,
-                freq=ts_interval
+                freq=ts_interval,
+                adj='qfq'
             )
             df = pd.concat([df[:-1], d1])
 
